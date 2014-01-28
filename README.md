@@ -14,4 +14,12 @@ wxOGL
 第三发库
 用的是wxwidget2.9的版本。
 下载地址http://www.wxwidgets.org/
+
+编译的时候，记得打开支持Opengl的选项
+在wxWidgets工程目录下的include/wx/msw/setup.h中将
+define wxUSE_GLCANVAS 0改为 1
+然后重新编译wx_gl工程文件
+再将lib/vc_lib/msw/wx/setup.h中的
+define wxUSE_GLCANVAS 0改为 1
+
 ![demo.png](./demo.png)
