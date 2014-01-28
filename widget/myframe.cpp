@@ -149,13 +149,16 @@ void MyFrame1::OnPaint(wxPaintEvent& event)
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   glClear(GL_COLOR_BUFFER_BIT);
+
+  Controller &control = Controller::Get();
+  control.Draw(); 
+
   if (m_curPrimitive)
   {
     m_curPrimitive->Draw();
 
   }
-  Controller &control = Controller::Get();
-  control.Draw(); 
+  
   m_canvas->SwapBuffers();
 }
 
