@@ -14,3 +14,4 @@ wxOGL
 第三发库
 用的是wxwidget2.9的版本。
 下载地址http://www.wxwidgets.org/
+![demo.png](./demo.png)
