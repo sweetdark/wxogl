@@ -26,6 +26,7 @@ public:
   void Redo();
 
   void SaveToTgaFile(const wxString &fileName);
+  void SaveToBmpFile(const wxString &fileName);
 private:
   static void Delete(Primitive *p)
   {

@@ -244,11 +244,18 @@ void MyFrame1::SetPencilMode(wxCommandEvent &WXUNUSED(event))
 
 void MyFrame1::OnSave(wxCommandEvent &WXUNUSED(event))
 {
-  wxFileDialog saveDialog(this, wxT("Save tga file"), "", "", "tga file (*.tga)|*.tga", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+  wxFileDialog saveDialog(this, wxT("Save tga file"), "", "", "bmp and tga file (*.tga;*.bmp)|*.bmp;*.tga", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
   if (saveDialog.ShowModal() == wxID_CANCEL)
     return;
   wxString fileName = saveDialog.GetPath();
-  Controller::Get().SaveToTgaFile(fileName);
+  if (fileName.AfterLast('.').CmpNoCase(wxT("bmp")) == 0)
+  {
+    Controller::Get().SaveToBmpFile(fileName);
+  }
+  else
+  {
+    Controller::Get().SaveToTgaFile(fileName);
+  }
 }
 
 void MyFrame1::OnExit(wxCommandEvent &WXUNUSED(event))

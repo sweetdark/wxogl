@@ -203,3 +203,40 @@ void Controller::SaveToTgaFile(const wxString &fileName)
 {    
   gltWriteTGA(fileName.c_str());
 }
+
+void Controller::SaveToBmpFile(const wxString &fileName)
+{
+  unsigned long lImageSize;   // Size in bytes of image
+  GLbyte	*pBits = NULL;      // Pointer to bits
+  GLint iViewport[4];         // Viewport in pixels
+  GLenum lastBuffer;          // Storage for the current read buffer setting
+
+  // Get the viewport dimensions
+  glGetIntegerv(GL_VIEWPORT, iViewport);
+
+  // How big is the image going to be (targas are tightly packed)
+  lImageSize = iViewport[2] * 3 * iViewport[3];	
+
+  // Allocate block. If this doesn't work, go home
+  pBits = (GLbyte *)malloc(lImageSize);
+  if(pBits == NULL)
+    return ;
+
+  // Read bits from color buffer
+  glPixelStorei(GL_PACK_ALIGNMENT, 1);
+  glPixelStorei(GL_PACK_ROW_LENGTH, 0);
+  glPixelStorei(GL_PACK_SKIP_ROWS, 0);
+  glPixelStorei(GL_PACK_SKIP_PIXELS, 0);
+
+  // Get the current read buffer setting and save it. Switch to
+  // the front buffer and do the read operation. Finally, restore
+  // the read buffer state
+  glGetIntegerv(GL_READ_BUFFER, (GLint *)&lastBuffer);
+  glReadBuffer(GL_FRONT);
+  glReadPixels(0, 0, iViewport[2], iViewport[3], GL_BGR_EXT, GL_UNSIGNED_BYTE, pBits);
+  glReadBuffer(lastBuffer);
+
+  wxImage img(iViewport[2], iViewport[3]);
+  img.SetData((unsigned char*)pBits);
+  img.SaveFile(fileName, wxBITMAP_TYPE_BMP);
+}
